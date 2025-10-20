@@ -1,23 +1,22 @@
-import { snakePos } from "./snake.js";
-import { setDirection } from "./main.js";
+export function getDirection(event) {
+  let direction = "";
 
-function onInput(event) {
   switch (event.key) {
     case "ArrowUp":
-      setDirection("up");
+      direction = "up";
       break;
     case "ArrowDown":
-      setDirection("down");
+      direction = "down";
       break;
     case "ArrowLeft":
-      setDirection("left");
+      direction = "left";
       break;
     case "ArrowRight":
-      setDirection("right");
+      direction = "right";
       break;
     default:
       break;
   }
-}
 
-document.addEventListener("keydown", onInput);
+  return direction;
+}

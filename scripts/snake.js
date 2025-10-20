@@ -1,12 +1,32 @@
-import { SNAKE_COLOR } from "./config.js";
+import { GRID_SIZE, SNAKE_COLOR } from "./config.js";
 import { draw } from "./utils.js";
 
 const canvas = document.querySelector("#game-canvas");
-const ctx = canvas.getContext("2d");
 
-export let snakePos = { x: 50, y: 50 };
+let snakePos = { x: 50, y: 50 };
+
+function moveSnake(direction) {
+  switch (direction) {
+    case "up":
+      snakePos.y -= GRID_SIZE;
+      break;
+    case "down":
+      snakePos.y += GRID_SIZE;
+      break;
+    case "left":
+      snakePos.x -= GRID_SIZE;
+      break;
+    case "right":
+      snakePos.x += GRID_SIZE;
+      break;
+    default:
+      break;
+  }
+}
 
 export function updateSnake(direction) {
-  console.log("test");
+  moveSnake(direction);
+  console.log(snakePos);
+
   draw(SNAKE_COLOR, snakePos);
 }
