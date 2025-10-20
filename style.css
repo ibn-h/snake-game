@@ -1,0 +1,19 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+}
+
+main {
+  width: fit-content;
+  margin: auto;
+  padding-top: 20vh;
+}
+
+#game-canvas {
+  border: 1px solid black;
+}
