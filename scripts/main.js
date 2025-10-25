@@ -11,6 +11,7 @@ import {
 const scoreDisplay = document.getElementById("score");
 const highScoreDisplay = document.getElementById("highscore");
 const startBtn = document.getElementById("start-btn");
+const restartBtn = document.getElementById("restart-btn");
 const canvas = document.querySelector("#game-canvas");
 const ctx = canvas.getContext("2d");
 
@@ -86,5 +87,11 @@ export function onInput(event) {
   direction = getDirection(event);
 }
 
+function onRestart() {
+  endGame();
+  startGame();
+}
+
 startBtn.addEventListener("click", startGame);
+restartBtn.addEventListener("click", onRestart);
 document.addEventListener("keydown", onInput);
