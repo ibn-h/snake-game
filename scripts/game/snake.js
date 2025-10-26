@@ -91,8 +91,6 @@ export function checkForApple(position) {
 }
 
 export function growSnake() {
-  console.log(JSON.stringify(snake));
-
   let newPos = { ...snake[snake.length - 1] };
 
   if (currDirection === "up") {
@@ -104,10 +102,6 @@ export function growSnake() {
   } else if (currDirection === "right") {
     newPos.x -= GRID_SIZE;
   }
-
-  console.log(`Current position: ${JSON.stringify(snake[snake.length - 1])}`);
-
-  console.log(`Growing snake at position: ${JSON.stringify(newPos)}`);
 
   snake.push(newPos);
 }

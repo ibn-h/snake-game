@@ -1,5 +1,6 @@
 import { getApplePositions, spawnApple } from "./apple.js";
 import { getDirection } from "./input.js";
+import { setupUser, submitScore } from "./leaderboard.js";
 import {
   updateSnake,
   detectCollision,
@@ -50,6 +51,7 @@ function gameLoop() {
   if (detectCollision()) {
     if (score > highScore) {
       highScore = score;
+      submitScore(highScore);
     }
 
     alert("Game Over!");
@@ -92,6 +94,7 @@ function onRestart() {
   startGame();
 }
 
+setupUser();
 startBtn.addEventListener("click", startGame);
 restartBtn.addEventListener("click", onRestart);
 document.addEventListener("keydown", onInput);
