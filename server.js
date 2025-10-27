@@ -19,7 +19,7 @@ async function initLeaderboard() {
 await initLeaderboard();
 
 server.use(cors());
-server.use(express.json());
+server.use(express.static("public"));
 
 server.post("/submit-score", async (req, res) => {
   const { id, score } = req.body;
