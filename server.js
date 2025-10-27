@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 
 const server = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 let leaderboard = [];
 
@@ -21,7 +21,7 @@ await initLeaderboard();
 server.use(cors());
 server.use(express.json());
 
-server.post("/submit-score", (req, res) => {
+server.post("/submit-score", async (req, res) => {
   const { id, score } = req.body;
 
   if (!id || typeof score !== "number") {
@@ -40,7 +40,7 @@ server.post("/submit-score", (req, res) => {
   leaderboard = leaderboard.slice(0, 10);
   res.status(200).send("Score submitted successfully");
 
-  fs.writeFile("data.json", JSON.stringify(leaderboard, null, 2));
+  await fs.writeFile("data.json", JSON.stringify(leaderboard, null, 2));
 });
 
 server.get("/leaderboard", (req, res) => {
