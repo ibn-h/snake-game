@@ -1,18 +1,46 @@
+import { promises as fs } from "fs";
 import express from "express";
+import cors from "cors";
 
 const server = express();
 const PORT = 3000;
 
 let leaderboard = [];
 
+async function initLeaderboard() {
+  try {
+    const data = await fs.readFile("data.json", "utf-8");
+    leaderboard = JSON.parse(data);
+  } catch (error) {
+    console.error("Error initializing leaderboard:", error);
+  }
+}
+
+await initLeaderboard();
+
+server.use(cors());
 server.use(express.json());
 
 server.post("/submit-score", (req, res) => {
   const { id, score } = req.body;
-  leaderboard.push({ id, score });
+
+  if (!id || typeof score !== "number") {
+    return res.status(400).send("Invalid data");
+  }
+
+  const existingEntry = leaderboard.find((entry) => entry.id === id);
+
+  if (existingEntry) {
+    existingEntry.score = score;
+  } else {
+    leaderboard.push({ id, score });
+  }
+
   leaderboard.sort((a, b) => b.score - a.score);
   leaderboard = leaderboard.slice(0, 10);
   res.status(200).send("Score submitted successfully");
+
+  fs.writeFile("data.json", JSON.stringify(leaderboard, null, 2));
 });
 
 server.get("/leaderboard", (req, res) => {

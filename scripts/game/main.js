@@ -1,6 +1,6 @@
 import { getApplePositions, spawnApple } from "./apple.js";
 import { getDirection } from "./input.js";
-import { setupUser, submitScore } from "./leaderboard.js";
+import { submitScore, fetchLeaderboard } from "./leaderboard.js";
 import {
   updateSnake,
   detectCollision,
@@ -92,6 +92,21 @@ export function onInput(event) {
 function onRestart() {
   endGame();
   startGame();
+}
+
+async function setupUser() {
+  if (!localStorage.getItem("userID")) {
+    const id = crypto.randomUUID();
+    localStorage.setItem("userID", id);
+  }
+
+  const data = await fetchLeaderboard();
+  const userData = data.find(
+    (entry) => entry.id === localStorage.getItem("userID")
+  );
+
+  highScore = userData.score || 0;
+  highScoreDisplay.textContent = highScore;
 }
 
 setupUser();
