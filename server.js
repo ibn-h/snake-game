@@ -59,10 +59,6 @@ server.post("/submit-score", async (req, res) => {
 server.get("/leaderboard", async (req, res) => {
   let leaderboard = await getLeaderboard();
 
-  if (leaderboard.length === 0) {
-    return res.status(200).send("No scores available.");
-  }
-
   res.json(leaderboard);
 });
 

@@ -100,12 +100,16 @@ async function setupUser() {
     localStorage.setItem("userID", id);
   }
 
-  // const data = await fetchLeaderboard();
+  const data = await fetchLeaderboard().catch((error) => {
+    console.error("Error fetching leaderboard during setup:", error);
+    return [];
+  });
+
   const userData = data.find(
     (entry) => entry.id === localStorage.getItem("userID")
   );
 
-  highScore = userData.score || 0;
+  highScore = userData ? userData.score : 0;
   highScoreDisplay.textContent = highScore;
 }
 
