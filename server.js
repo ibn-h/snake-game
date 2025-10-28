@@ -2,15 +2,16 @@ import { createClient } from "@supabase/supabase-js";
 import { promises as fs } from "fs";
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const SUPABASE_URL = "https://fmpkqbgrzcuorsqebqze.supabase.co";
-const SUPABASE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtcGtxYmdyemN1b3JzcWVicXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2NzM0NTIsImV4cCI6MjA3NzI0OTQ1Mn0.aMTYtDzAkCo2tHWGT4nBsr_jHi80dS4WVFWNvugHI5Q";
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 const server = express();
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-let leaderboard = [];
 
 async function submitScores(id, score) {
   const { data, error } = await supabase
@@ -40,14 +41,19 @@ server.use(cors());
 server.use(express.static("public"));
 
 server.post("/submit-score", async (req, res) => {
-  const { id, score } = req.body;
+  try {
+    const { id, score } = req.body;
 
-  if (!id || typeof score !== "number") {
-    return res.status(400).send("Invalid data");
+    if (!id || typeof score !== "number") {
+      return res.status(400).send("Invalid data");
+    }
+
+    await submitScores(id, score);
+    res.status(200).send("Score submitted successfully");
+  } catch (error) {
+    console.error("Error in submit-score endpoint:", error);
+    res.status(500).send("Internal server error");
   }
-
-  await submitScores(id, score);
-  res.status(200).send("Score submitted successfully");
 });
 
 server.get("/leaderboard", async (req, res) => {
