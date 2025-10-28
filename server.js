@@ -40,8 +40,14 @@ async function getLeaderboard() {
 server.use(cors());
 server.use(express.static("public"));
 
+console.log("Running server!");
+
 server.post("/submit-score", async (req, res) => {
+  console.log("Post attempt", req);
+
   try {
+    console.log(req.body);
+
     const { id, score } = req.body;
 
     if (!id || typeof score !== "number") {
