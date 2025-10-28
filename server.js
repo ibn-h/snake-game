@@ -38,6 +38,8 @@ async function getLeaderboard() {
 }
 
 server.use(cors());
+// parse JSON request bodies so req.body is populated
+server.use(express.json());
 server.use(express.static("public"));
 
 console.log("Running server!");
