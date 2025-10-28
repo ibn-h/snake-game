@@ -26,7 +26,7 @@ async function submitScores(id, score) {
 
 async function getLeaderboard() {
   const { data, error } = await supabase
-    .from("scores")
+    .from("leaderboard")
     .select("*")
     .order("score", { ascending: false })
     .limit(10);
