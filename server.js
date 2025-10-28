@@ -45,16 +45,9 @@ server.use(express.static("public"));
 console.log("Running server!");
 
 server.post("/submit-score", async (req, res) => {
-  console.log("Post attempt", req);
-
   try {
-    console.log(req.body);
-
     const { id, score } = req.body;
-
-    if (!id || typeof score !== "number") {
-      return res.status(400).send("Invalid data");
-    }
+    console.log("Post attempt by " + id + " with " + score);
 
     await submitScores(id, score);
     res.status(200).send("Score submitted successfully");
