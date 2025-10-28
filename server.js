@@ -1,22 +1,39 @@
+import { createClient } from "@supabase/supabase-js";
 import { promises as fs } from "fs";
 import express from "express";
 import cors from "cors";
 
-const server = express();
 const PORT = process.env.PORT || 3000;
+const SUPABASE_URL = "https://fmpkqbgrzcuorsqebqze.supabase.co";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtcGtxYmdyemN1b3JzcWVicXplIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2NzM0NTIsImV4cCI6MjA3NzI0OTQ1Mn0.aMTYtDzAkCo2tHWGT4nBsr_jHi80dS4WVFWNvugHI5Q";
 
+const server = express();
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 let leaderboard = [];
 
-async function initLeaderboard() {
-  try {
-    const data = await fs.readFile("data.json", "utf-8");
-    leaderboard = JSON.parse(data);
-  } catch (error) {
-    console.error("Error initializing leaderboard:", error);
+async function submitScores(id, score) {
+  const { data, error } = await supabase
+    .from("leaderboard")
+    .upsert([{ id, score }]);
+
+  if (error) {
+    console.error("Error submitting score to Supabase:", error);
+  } else {
+    console.log("Score submitted to Supabase:", data);
   }
 }
 
-await initLeaderboard();
+async function getLeaderboard() {
+  const { data, error } = await supabase
+    .from("scores")
+    .select("*")
+    .order("score", { ascending: false })
+    .limit(10);
+
+  if (error) console.error("Error fetching leaderboard:", error);
+  else console.log("Leaderboard:", data);
+}
 
 server.use(cors());
 server.use(express.static("public"));
@@ -28,22 +45,13 @@ server.post("/submit-score", async (req, res) => {
     return res.status(400).send("Invalid data");
   }
 
-  const existingEntry = leaderboard.find((entry) => entry.id === id);
-
-  if (existingEntry) {
-    existingEntry.score = score;
-  } else {
-    leaderboard.push({ id, score });
-  }
-
-  leaderboard.sort((a, b) => b.score - a.score);
-  leaderboard = leaderboard.slice(0, 10);
+  await submitScores(id, score);
   res.status(200).send("Score submitted successfully");
-
-  await fs.writeFile("data.json", JSON.stringify(leaderboard, null, 2));
 });
 
-server.get("/leaderboard", (req, res) => {
+server.get("/leaderboard", async (req, res) => {
+  let leaderboard = await getLeaderboard();
+
   if (leaderboard.length === 0) {
     return res.status(200).send("No scores available.");
   }
