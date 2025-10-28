@@ -1,5 +1,7 @@
+import { URL } from "../config.js";
+
 export async function fetchLeaderboard() {
-  const response = await fetch("http://localhost:3000/leaderboard");
+  const response = await fetch(`${URL}/leaderboard`);
 
   if (!response.ok) {
     console.error("Failed to fetch leaderboard");
@@ -12,7 +14,7 @@ export async function fetchLeaderboard() {
 export function submitScore(score) {
   const userID = localStorage.getItem("userID");
 
-  fetch("http://localhost:3000/submit-score", {
+  fetch(`${URL}/submit-score`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: userID, score: score }),
