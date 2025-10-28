@@ -32,7 +32,8 @@ async function getLeaderboard() {
     .limit(10);
 
   if (error) console.error("Error fetching leaderboard:", error);
-  else console.log("Leaderboard:", data);
+
+  return data || [];
 }
 
 server.use(cors());

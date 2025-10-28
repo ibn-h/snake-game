@@ -100,7 +100,7 @@ async function setupUser() {
     localStorage.setItem("userID", id);
   }
 
-  const data = await fetchLeaderboard();
+  // const data = await fetchLeaderboard();
   const userData = data.find(
     (entry) => entry.id === localStorage.getItem("userID")
   );
