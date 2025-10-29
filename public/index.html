@@ -21,20 +21,80 @@
       <div id="controls">
         <button id="start-btn">Start</button>
         <button id="restart-btn">Restart</button>
-        <button id="leaderboard-btn" class="indev">Leaderboard</button>
-        <button id="settings-btn" class="indev">Settings</button>
+        <button id="leaderboard-btn">Leaderboard</button>
+        <button id="settings-btn">Settings</button>
       </div>
 
-      <div id="coming-soon-modal" style="display: none">
+      <div id="coming-soon-modal" class="modal" style="display: none">
         <div class="modal-content">
           <span class="close-btn">&times;</span>
           <h2>Coming Soon!</h2>
           <p>This feature is under development.</p>
         </div>
       </div>
+
+      <div id="settings-modal" class="modal" style="display: none">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <h2>Settings</h2>
+          <div>
+            <div>
+              <label for="snake-color" class="setting">Snake Color</label>
+              <input
+                type="color"
+                id="snake-color"
+                name="snake-color"
+                value="#00FF00"
+              />
+            </div>
+
+            <div>
+              <label for="snake-head-color" class="setting">Snake Head Color</label>
+              <input
+                type="color"
+                id="snake-head-color"
+                name="snake-head-color"
+                value="#00BF00"
+              />
+            </div>
+
+            <div>
+              <label for="apple-color" class="setting">Apple Color</label>
+              <input
+                type="color"
+                id="apple-color"
+                name="apple-color"
+                value="#FF0000"
+              />
+            </div>
+
+            <div>
+              <label for="max-apples" class="setting">Max Apples</label>
+              <input
+                type="number"
+                id="max-apples"
+                name="max-apples"
+                value="5"
+                min="1"
+                max="10"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="leaderboard-modal" class="modal" style="display: none">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <h2>Leaderboard</h2>
+          <ul></ul>
+        </div>
+      </div>
     </main>
 
     <script type="module" src="scripts/game/main.js" defer></script>
     <script src="scripts/ui/modal.js" defer></script>
+    <script src="scripts/ui/leaderboard.js" type="module" defer></script>
+    <script src="scripts/ui/settings.js" type="module" defer></script>
   </body>
 </html>

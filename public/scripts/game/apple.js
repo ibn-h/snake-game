@@ -7,7 +7,7 @@ const applePositions = [];
 export function spawnApple() {
   applePositions.forEach((pos) => draw(APPLE_COLOR, pos));
 
-  if (applePositions.length == APPLES_LIMIT) {
+  if (applePositions.length == localStorage.getItem("maxApples")) {
     return;
   }
 

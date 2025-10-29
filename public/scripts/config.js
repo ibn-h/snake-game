@@ -1,8 +1,8 @@
-export const GRID_SIZE = 25;
-export const APPLES_LIMIT = 10;
+export let GRID_SIZE = 25;
+export let APPLES_LIMIT = 10;
 
-export const APPLE_COLOR = "red";
-export const SNAKE_COLOR = "green";
-export const SNAKE_HEAD_COLOR = "darkgreen";
+export let APPLE_COLOR = "#FF0000";
+export let SNAKE_COLOR = "#008000";
+export let SNAKE_HEAD_COLOR = "#006400";
 
-export const URL = "https://snake-game-ygmm.onrender.com";
+export let URL = "https://snake-game-ygmm.onrender.com";

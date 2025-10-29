@@ -70,7 +70,10 @@ export function updateSnake(direction) {
   moveSnake(direction);
 
   snake.forEach((segment) => {
-    let color = segment === snake[0] ? SNAKE_HEAD_COLOR : SNAKE_COLOR;
+    let color =
+      segment === snake[0]
+        ? localStorage.getItem("snakeHeadColor")
+        : localStorage.getItem("snakeColor");
     draw(color, segment);
   });
 }
