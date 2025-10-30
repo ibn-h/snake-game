@@ -23,6 +23,9 @@ let direction = "";
 let score = 0;
 let highScore = 0;
 
+let touchStartX = null;
+let touchStartY = null;
+
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -113,6 +116,52 @@ async function setupUser() {
   highScoreDisplay.textContent = highScore;
 }
 
+function setupTouchControls() {
+  let touchStartX = null;
+  let touchStartY = null;
+
+  window.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+  });
+
+  window.addEventListener("touchend", (event) => {
+    if (touchStartX === null || touchStartY === null) {
+      return;
+    }
+
+    if (!gameRunning) {
+      return;
+    }
+
+    const touchEndX = event.changedTouches[0].clientX;
+    const touchEndY = event.changedTouches[0].clientY;
+
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      direction = deltaX > 0 ? "right" : "left";
+    } else {
+      direction = deltaY > 0 ? "down" : "up";
+    }
+
+    touchStartX = null;
+    touchStartY = null;
+
+    console.log(direction);
+  });
+
+  window.addEventListener(
+    "touchmove",
+    (event) => {
+      event.preventDefault();
+    },
+    { passive: false }
+  );
+}
+
+setupTouchControls();
 setupUser();
 startBtn.addEventListener("click", startGame);
 restartBtn.addEventListener("click", onRestart);
